@@ -12,7 +12,7 @@ from app.api.v1.resume import router as resume_router, ResumeRequest
 from app.api.service.resume_service import PDFParseError, parse_local_pdf
 from app.api.service.llm_service import InvalidJSON, LLMCalledFailed, LLMParseError
 app = FastAPI()
-app.include_router(resume_router, prefix="/api/v1")
+app.include_router(resume_router, prefix="/agent/api/v1")
 def build_error_response(code: int, message: str):
     return JSONResponse(
         status_code=200,  # 保持 HTTP 状态码为 200，由前端根据业务 code 判断

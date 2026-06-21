@@ -2,6 +2,8 @@
 import asyncio
 import time
 from fastapi import APIRouter
+
+from app.prompt.pdf_parse import system_prompt
 from app.api.service.resume_service import parse_local_pdf
 from app.api.service.llm_service import llm_pdf_parse
 from app.models.resume import ResumeRequest
@@ -15,8 +17,8 @@ router = APIRouter(prefix="/resume", tags=["简历解析"])
 @router.post("/parse")
 async def parse_pdf(request_data: ResumeRequest):
     # 1. 调用底层解析逻辑（如果出错，会自动被全局异常处理器捕获）
-    text = await asyncio.to_thread(parse_local_pdf, request_data.filepath)
-    result = await asyncio.to_thread(llm_pdf_parse, text, request_data)
+    text = await asyncio.to_thread(parse_local_pdf, request_data.filePath)
+    result = await asyncio.to_thread(llm_pdf_parse, text, request_data,system_prompt)
     # 2. 只有成功时，才在这里组装返回结构
     return {
         "code": 200,
