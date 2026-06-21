@@ -5,7 +5,10 @@ from datetime import datetime
 from openai import OpenAI
 from dashscope import Generation
 
-from main import ResumeRequest
+from app.models.resume import ResumeRequest
+
+
+#from resume import ResumeRequest
 
 
 #text参数为解析过后的文字
@@ -63,18 +66,19 @@ def llm_pdf_parse(text:str,request_data:ResumeRequest) ->json :
     try:
         response=Generation.call(
             model="qwen-max",
-            massages=messages,
+            messages=messages,
             temperature=0.1
         )
+        # app/api/service/llm_service.py
         if response.status_code ==200:
-            content=response.output.choicesp[0].messages.content
+            content=response.output.text
             match=re.search(r'\{.*\}', content, re.DOTALL)
             if match:
                 clean_content=match.group()
                 data=json.loads(clean_content)
                 now = datetime.now()
                 time = now.strftime("%Y-%m-%d %H:%M:%S")
-                basedata["massage"] = "success"
+                basedata["message"] = "success"
                 basedata["data"]["resumeId"] = request_data.resumeId
                 basedata["data"]["resumeName"] = request_data.fileName
                 basedata["data"]["parseStatus"] = "success"

@@ -1,18 +1,14 @@
 # app/api/v1/resume.py
 import time
 from fastapi import APIRouter
-from pydantic import BaseModel
 from app.api.service.resume_service import parse_local_pdf
 from app.api.service.llm_service import llm_pdf_parse
+from app.models.resume import ResumeRequest
 
 router = APIRouter(prefix="/resume", tags=["简历解析"])
 
 
-class ResumeRequest(BaseModel):#接收/api/v1/resume/parse JSON格式数据
-    resumeId: str | None = None
-    filepath: str
-    fileName: str | None = None
-    fileType: str | None = None
+
 
 
 @router.post("/parse")
