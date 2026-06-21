@@ -15,9 +15,8 @@ router = APIRouter(prefix="/resume", tags=["简历解析"])
 @router.post("/parse")
 async def parse_pdf(request_data: ResumeRequest):
     # 1. 调用底层解析逻辑（如果出错，会自动被全局异常处理器捕获）
-    text = parse_local_pdf(request_data.filepath)
+    text = await asyncio.to_thread(parse_local_pdf, request_data.filepath)
     result = await asyncio.to_thread(llm_pdf_parse, text, request_data)
-
     # 2. 只有成功时，才在这里组装返回结构
     return {
         "code": 200,
