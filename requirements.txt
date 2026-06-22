@@ -1,0 +1,6 @@
+pymilvus
+dashscope
+PyMuPDF
+openai
+fastapi
+uvicorn

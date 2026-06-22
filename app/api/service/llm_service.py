@@ -27,10 +27,7 @@ basedata={
     "message":"",
     "data":{
         "resumeId":"",
-        "resumeName":"",
-        "parseStatus":"",
-        "parseResult":"",
-        "createTime":""
+        "parseSuccess":""
     }
 }
 def llm_pdf_parse(text:str,request_data:ResumeRequest,system_prompt) ->json :
@@ -56,10 +53,8 @@ def llm_pdf_parse(text:str,request_data:ResumeRequest,system_prompt) ->json :
                 time = now.strftime("%Y-%m-%d %H:%M:%S")
                 basedata["message"] = "success"
                 basedata["data"]["resumeId"] = request_data.resumeId
-                basedata["data"]["resumeName"] = request_data.fileName
-                basedata["data"]["parseStatus"] = "success"
-                basedata["data"]["parseResult"] = data
-                basedata["data"]["createTime"] = time
+                basedata["data"]["parseSuccess"] ="true"
+                basedata["data"].update(data)
                 return basedata
             else:
                 raise InvalidJSON("未能找到合法的JSON数据")
