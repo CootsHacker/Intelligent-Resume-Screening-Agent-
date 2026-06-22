@@ -21,6 +21,5 @@ async def parse_pdf(request_data: ResumeRequest):
     result = await asyncio.to_thread(llm_pdf_parse, text, request_data,system_prompt)
     # 2. 只有成功时，才在这里组装返回结构
     return {
-        **result,
-        "timestamp": int(time.time() * 1000)
+        **result
     }

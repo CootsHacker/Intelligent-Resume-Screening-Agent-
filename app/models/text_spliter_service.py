@@ -8,14 +8,18 @@ from pydantic import BaseModel
       "skills":"此部分按照最初提取机构中的不变",
       "projects":"此部分把项目全部塞进去，解包",
       "workExperience":"此部分就是原本的结构化提取数据"
+      "awards":""
+      "overallSummary":""
   }
 }
 """
 class Info(BaseModel):
     baseInfo:str
     skills:str
-    projects:str
-    workExperience:str
+    projects:str | None=None
+    workExperience:str | None=None
+    awards:str |None=None
+    overallSummary:str
 
 class TextSpliter(BaseModel):
     resumeId:str |None=None
