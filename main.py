@@ -6,14 +6,14 @@ from starlette.responses import JSONResponse
 
 from app.api.service.llm_service import llm_pdf_parse, InvalidJSON, LLMCalledFailed, LLMParseError
 # 1. 导入路由
-from app.api.v1.resume import router as resume_router, ResumeRequest
+from app.api.v1.resume import router as resume_router, ResumeRequest, vector_router
 
 # 2. 导入所有自定义异常（建议后续将它们集中放到 app/exceptions.py 中）
 from app.api.service.resume_service import PDFParseError, parse_local_pdf
 from app.api.service.llm_service import InvalidJSON, LLMCalledFailed, LLMParseError
 app = FastAPI()
 app.include_router(resume_router, prefix="/agent/api/v1")
-def build_error_response(code: int, message: str):
+async def build_error_response(code: int, message: str):
     return JSONResponse(
         status_code=200,  # 保持 HTTP 状态码为 200，由前端根据业务 code 判断
         content={
@@ -44,6 +44,7 @@ async def llm_called_failed_handler(request: Request, exc: LLMCalledFailed):
 async def llm_parse_error_handler(request: Request, exc: LLMParseError):
     return build_error_response(1005, str(exc))
 
+app.include_router(vector_router,prefix="/agent/api/v1")
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):

@@ -10,7 +10,7 @@ def  init_resume_collection():
         FieldSchema(name="name",dtype=DataType.VARCHAR,max_length=100),
         FieldSchema(name="city",dtype=DataType.VARCHAR,max_length=75),
         #用列表存储技能栈
-        FieldSchema(name="skills",dtype=DataType.ARRAY,max_length=100,max_capacity=10),
+        FieldSchema(name="skills",dtype=DataType.JSON,max_length=100,max_capacity=10),
         FieldSchema(name="education",dtype=DataType.JSON),
         FieldSchema(name="projects",dtype=DataType.FLOAT_VECTOR,dim=384),
         FieldSchema(name="awards",dtype=DataType.VARCHAR,max_length=300),
