@@ -1,6 +1,9 @@
 pymilvus
-dashscope
+dashscope~=1.25.23
 PyMuPDF
-openai
-fastapi
+openai~=2.43.0
+fastapi~=0.138.0
 uvicorn
+
+pydantic~=2.13.4
+starlette~=1.3.1
