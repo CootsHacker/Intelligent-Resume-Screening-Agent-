@@ -26,4 +26,4 @@ def text_input(request_data:ResumeText):
     overallSummary_text=request_data.overallSummary
     workExperience_text=request_data.workExperience
     resumeId=request_data.resumId
-    return baseInfo_dict , skills_dict,education_dict,projects_text,
+    return baseInfo_dict , skills_dict,education_dict,projects_text,awards_text,overallSummary_text,workExperience_text,resumeId
