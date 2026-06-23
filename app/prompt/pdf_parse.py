@@ -28,9 +28,10 @@ system_prompt="""
       "middleware": ["RabbitMQ", "Nginx", "Docker"],
       "tools": ["Git", "Linux", "Maven"]
     },
+    #提示信息：如果在接下来的workExperience提取中，只是大概提了某公司或者某几个公司，没有分开详细阐述在某某公司的工作经历，请将他们合并进一个列表处理
     "workExperience": [
       {
-        "company": "某某科技有限公司",
+        "company": "",
         "position": "Java后端开发实习生",
         "startTime": "2024-03",
         "endTime": "2024-06",
