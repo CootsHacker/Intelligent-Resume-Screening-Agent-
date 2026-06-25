@@ -26,7 +26,7 @@ class QueueBatchWriter:
             try:
                 first_item = await asyncio.wait_for(self.queue.get(), timeout=self.timeout)
                 batch.append(first_item)
-                while len(batch)<maxsize and not self.queue.empty():
+                while len(batch)<self.max_size and not self.queue.empty():
                     try:
                         item = self.queue.get_nowait()
                         batch.append(item)
