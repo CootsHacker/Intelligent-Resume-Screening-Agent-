@@ -1,26 +1,40 @@
-from pydantic import BaseModel
-"""
-向量存储请求体={
-{
-  "resumeId": "res_2001",
-  "resumeText":{
-      "baseInf":"此部分包含个人基本信息：姓名，电话，邮箱地址，大学，专业，毕业时间",
-      "skills":"此部分按照最初提取机构中的不变",
-      "projects":"此部分把项目全部塞进去，解包",
-      "workExperience":"此部分就是原本的结构化提取数据"
-      "awards":""
-      "overallSummary":""
-  }
-}
-"""
-class Info(BaseModel):
-    baseInfo:str
-    skills:str
-    projects:str | None=None
-    workExperience:str | None=None
-    awards:str |None=None
-    overallSummary:str
+from typing import Optional
 
-class TextSpliter(BaseModel):
-    resumeId:str |None=None
-    resumeText:Info
+from pydantic import BaseModel
+
+class BaseInfo(BaseModel):
+    name:str |None=None
+    phone:str |None=None
+    email:str |None=None
+    gender:str |None=None
+    age:str |None=None
+    city:str |None=None
+
+class Skills(BaseModel):
+    programming:list[str]|None=None
+    frameworks:list[str]|None=None
+    databases:list[str]|None=None
+    middleware:list[str]|None=None
+    tools:list[str]|None=None
+
+class EducationData(BaseModel):
+    school:str|None=None
+    major:str|None=None
+    degree:str|None=None
+    startTime:str|None=None
+    endTime:str|None=None
+    gpa:str|None=None
+    rank:str|None=None
+
+class Education(BaseModel):
+    education:list[EducationData]
+
+class ResumeText(BaseModel):
+    baseInfo:Optional[BaseInfo]=None
+    skills:Optional[Skills]=None
+    education:Optional[Education]=None
+    projects:str|None=None
+    awards:str|None=None
+    overallSummary:str|None=None
+    workExperience:str|None=None
+    resumId:str

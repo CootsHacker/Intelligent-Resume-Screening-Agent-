@@ -23,9 +23,9 @@ system_prompt="""
     ],
     "skills": {
       "programming": ["Java", "Python", "C++"],
-      "frameworks": ["Spring Boot", "Spring Cloud", "MyBatis"],
-      "databases": ["MySQL", "Redis", "MongoDB"],
-      "middleware": ["RabbitMQ", "Nginx", "Docker"],
+      "frameworks": ["Spring Boot", "Spring Cloud"],
+      "databases": ["MySQL", "Redis"],
+      "middleware": ["RabbitMQ", "Nginx"],
       "tools": ["Git", "Linux", "Maven"]
     },
     #提示信息：如果在接下来的workExperience提取中，只是大概提了某公司或者某几个公司，没有分开详细阐述在某某公司的工作经历，请将他们合并进一个列表处理
@@ -35,7 +35,7 @@ system_prompt="""
         "position": "Java后端开发实习生",
         "startTime": "2024-03",
         "endTime": "2024-06",
-        "description": ["负责XX模块的开发与维护", "优化SQL查询性能，提升50%查询速度"],
+        "description": ["负责XX模块的开发与维护", "优化SQL查询性能"],
         "highlights": ["性能优化", "系统设计"]
       }
     ],
@@ -46,7 +46,7 @@ system_prompt="""
         "startTime": "2024-03",
         "endTime": "2024-06",
         "description": "基于Spring Boot的在线编程评测系统，支持多语言代码提交与自动评测",
-        "technologies": ["Spring Boot", "MySQL", "Redis", "Docker"],
+        "technologies": ["Spring Boot", "MySQL"],
         "highlights": ["Docker沙箱", "并发评测", "性能优化"]
       }
     ],
@@ -54,10 +54,10 @@ system_prompt="""
       "蓝桥杯省赛一等奖",
       "校级一等奖学金"
     ],
-    "overallSummary": "计算机专业本科，Java后端方向，有完整项目经验，掌握主流后端技术栈..."
+    "overallSummary": "计算机专业本科，掌握主流后端技术栈..."
   }
-  "OriginalWorkExperience":"这里额外再提取一遍：提取源文本信息中的工作经验并用原文以纯文本格式输出到这个字段，注意：必须用原文，不能增加或者删改"
-  “OriginalProjectExperience”:"这里额外再提取一遍:提取源文本信息中的项目经验并用原文以纯文本格式输出到这个字段，注意：必须用原文，不能增加或者删改"
+  "OriginalWorkExperience":"这里额外再提取一遍：提取源文本信息中的工作经验并用原文以纯文本格式输出到这个字段，注意：必须用原文，不能增加或者删改，如果遇到多段工作经历并且分开详细阐述了，请将他们整合成为多个段落，一个段落为一段经历"
+  “OriginalProjectExperience”:"这里额外再提取一遍:提取源文本信息中的项目经验并用原文以纯文本格式输出到这个字段，注意：必须用原文，不能增加或者删改，如果遇到多段项目经历并且分开详细阐述了，请将他们整合为多个段落，一个段落为一段经历"
 }
     如果某个字段在文本中未找到，请将其设为 null。不要输出任何额外的解释文字。如果遇到"age"字段不是阿拉伯数字的，请返回null。如果遇到“gender”字段不是"男"或者"女"的，请返回null
     """
