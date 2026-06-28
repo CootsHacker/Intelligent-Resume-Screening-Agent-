@@ -3,9 +3,10 @@ from sys import maxsize
 from typing import List, Any, Callable
 
 from pymilvus import Collection
-class InsertException(BaseException):
-    """数据写入失败"""
-    pass
+
+from app.Exception.Eception import InsertException
+
+
 class QueueBatchWriter:
     def __init__(self, max_size: int = 10, timeout: float = 3.0, write_func: Callable = None):
         self.max_size = max_size

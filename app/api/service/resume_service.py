@@ -1,9 +1,11 @@
 from xml.dom.minidom import Document
-class PDFParseError(Exception):
-    """PDF文件解析失败"""
-    pass
+
 import fitz #pymupdf
 import re
+
+from app.Exception.Eception import PDFParseError
+
+
 #pdf本地加载解析
 def parse_local_pdf(file_path:str):
     try:

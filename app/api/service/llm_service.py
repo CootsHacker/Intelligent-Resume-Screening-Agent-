@@ -5,6 +5,7 @@ from datetime import datetime
 from openai import OpenAI
 from dashscope import Generation
 
+from app.Exception.Eception import InvalidJSON, LLMCalledFailed, LLMParseError
 from app.models.resume import ResumeRequest
 
 
@@ -12,15 +13,7 @@ from app.models.resume import ResumeRequest
 
 
 #text参数为解析过后的文字
-class InvalidJSON(Exception):
-    """JSON格式错误(大模型返回数据异常)"""
-    pass
-class LLMCalledFailed(Exception):
-    """大模型调用异常"""
-    pass
-class LLMParseError(Exception):
-    """简历解析失败(代码逻辑或者语法错误)"""
-    pass
+
 #定义一个基础数据头结构
 basedata={
     "code":0,
@@ -39,7 +32,7 @@ def llm_pdf_parse(text:str,request_data:ResumeRequest,system_prompt) ->json :
     try:
         response=Generation.call(
             model="qwen-max",
-            messages=messages,
+            messeges=messages,
             temperature=0.1
         )
         # app/api/service/llm_service.py
