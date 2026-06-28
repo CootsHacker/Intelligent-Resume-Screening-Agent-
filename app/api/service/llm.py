@@ -3,6 +3,7 @@ import os
 import re
 
 from dashscope import Generation
+from json_repair import repair_json
 
 from app.Exception.Eception import InvalidJSON, LLMCalledFailed
 
@@ -25,7 +26,13 @@ def llm(system_prompt,text):
             match=re.search(r'\{.*\}', content, re.DOTALL)
             if match:
                 clean_content = match.group()
-                data = json.loads(clean_content)
+                try:
+                    # 尝试标准解析
+                    data = json.loads(clean_content)
+                except json.JSONDecodeError:
+                    # 如果失败，使用 json_repair 进行智能修复
+                    fixed_json = repair_json(clean_content)
+                    data = json.loads(fixed_json)
                 return data
             else:
                 raise InvalidJSON("未能找到合法的JSON数据")
