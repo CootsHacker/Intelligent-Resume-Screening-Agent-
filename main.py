@@ -5,8 +5,9 @@ from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
 from app.api.service.llm_service import llm_pdf_parse, InvalidJSON, LLMCalledFailed, LLMParseError
+from app.api.v1.jd import jd_router
 # 1. 导入路由
-from app.api.v1.resume import router as resume_router, ResumeRequest, vector_router
+from app.api.v1.resume import router as resume_router, ResumeRequest
 
 # 2. 导入所有自定义异常（建议后续将它们集中放到 app/exceptions.py 中）
 from app.api.service.resume_service import PDFParseError, parse_local_pdf
@@ -44,8 +45,4 @@ async def llm_called_failed_handler(request: Request, exc: LLMCalledFailed):
 async def llm_parse_error_handler(request: Request, exc: LLMParseError):
     return build_error_response(1005, str(exc))
 
-app.include_router(vector_router,prefix="/agent/api/v1")
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+app.include_router(jd_router,prefix="/agent/api/v1")
