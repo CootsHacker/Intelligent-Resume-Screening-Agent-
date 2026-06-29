@@ -1,4 +1,4 @@
-from app.models.text_spliter_service import ResumeText
+from app.models.text_spliter_service import Data
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
@@ -28,18 +28,18 @@ def text_splitter(text)->list:
             text_chunk.append(chunk)
     return text_chunk
 #此模块为分类处理传入数据
-def text_input(request_data:ResumeText):
-    baseInfo_dict=request_data.baseInfo.model_dump()
-    skills_dict=request_data.skills.model_dump(exclude_none=True)
-    education_dict=request_data.education.model_dump(exclude_none=True)
+def text_input(request_data:Data):
+    baseInfo_dict=request_data.resumeText.baseInfo.model_dump()
+    skills_dict=request_data.resumeText.skills.model_dump(exclude_none=True)
+    education_dict=request_data.resumeText.education.model_dump(exclude_none=True)
     #*****
-    projects_text=request_data.projects
-    awards_text=request_data.awards
+    projects_text=request_data.resumeText.projects
+    awards_text=request_data.resumeText.awards
     #*****
-    overallSummary_text=request_data.overallSummary
+    overallSummary_text=request_data.resumeText.overallSummary
     #*****
-    workExperience_text=request_data.workExperience
-    resumeId=request_data.resumId
+    workExperience_text=request_data.resumeText.workExperience
+    resumeId=request_data.resumeId
     projects_chunk=text_splitter(projects_text)
     overallSummary_chunk=text_splitter(overallSummary_text)
     workExperience_chunk=text_splitter(workExperience_text)
