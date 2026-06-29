@@ -7,7 +7,7 @@ class BaseInfo(BaseModel):
     phone:str |None=None
     email:str |None=None
     gender:str |None=None
-    age:str |None=None
+    age:int |None=None
     city:str |None=None
 
 class Skills(BaseModel):
