@@ -31,9 +31,9 @@ def text_splitter(text)->list:
 def text_input(request_data:Data):
     baseInfo_dict=request_data.resumeText.baseInfo.model_dump()
     skills_dict=request_data.resumeText.skills.model_dump(exclude_none=True)
-    education_dict=request_data.resumeText.education.model_dump(exclude_none=True)
+    education_dict=request_data.resumeText.education
     #*****
-    projects_text=request_data.resumeText.projects
+    projects_text=request_data.resumeText.projectExperience
     awards_text=request_data.resumeText.awards
     #*****
     overallSummary_text=request_data.resumeText.overallSummary

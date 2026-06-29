@@ -25,19 +25,14 @@ class EducationData(BaseModel):
     endTime:str|None=None
     gpa:str|None=None
     rank:str|None=None
-
-class Education(BaseModel):
-    education:list[EducationData]|None=None
-
 class ResumeText(BaseModel):
     baseInfo:Optional[BaseInfo]=None
     skills:Optional[Skills]=None
-    education:Optional[Education]=None
-    projects:str|None=None
+    education:list[EducationData] |None=None
     awards:str|None=None
     overallSummary:str|None=None
     workExperience:str|None=None
-
+    projectExperience:str|None=None
 class Data(BaseModel):
     resumeText:Optional[ResumeText]=None
     resumeId: str
