@@ -27,7 +27,7 @@ class EducationData(BaseModel):
     rank:str|None=None
 
 class Education(BaseModel):
-    education:list[EducationData]
+    education:list[EducationData]|None=None
 
 class ResumeText(BaseModel):
     baseInfo:Optional[BaseInfo]=None
@@ -37,4 +37,7 @@ class ResumeText(BaseModel):
     awards:str|None=None
     overallSummary:str|None=None
     workExperience:str|None=None
-    resumId:str
+
+class Data(BaseModel):
+    resumeText:Optional[ResumeText]=None
+    resumeId: str
