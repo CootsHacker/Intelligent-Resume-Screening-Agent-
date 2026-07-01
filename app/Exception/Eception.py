@@ -10,6 +10,6 @@ class LLMCalledFailed(Exception):
 class LLMParseError(Exception):
     """简历解析失败(代码逻辑或者语法错误)"""
     pass
-class InsertException(BaseException):
+class InsertException(Exception):
     """数据写入失败"""
     pass

@@ -1,5 +1,9 @@
+import json
+
 from app.models.text_spliter_service import Data
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from app.models.vector_database import VectorData
 
 
 #切分长文本
@@ -13,7 +17,7 @@ def text_splitter(text)->list:
     text_splitter_2=RecursiveCharacterTextSplitter(
         chunk_size=100,
         chunk_overlap=15,
-        separators=["。","，"]
+        separators=["。","：","，"]
     )
     text=text_splitter.split_text(text)
     text_chunk=[]
@@ -28,19 +32,14 @@ def text_splitter(text)->list:
             text_chunk.append(chunk)
     return text_chunk
 #此模块为分类处理传入数据
-def text_input(request_data:Data):
-    baseInfo_dict=request_data.resumeText.baseInfo.model_dump()
-    skills_dict=request_data.resumeText.skills.model_dump(exclude_none=True)
-    education_dict=request_data.resumeText.education
-    #*****
-    projects_text=request_data.resumeText.projectExperience
-    awards_text=request_data.resumeText.awards
-    #*****
-    overallSummary_text=request_data.resumeText.overallSummary
-    #*****
-    workExperience_text=request_data.resumeText.workExperience
+def text_input(request_data:VectorData):
     resumeId=request_data.resumeId
-    projects_chunk=text_splitter(projects_text)
-    overallSummary_chunk=text_splitter(overallSummary_text)
-    workExperience_chunk=text_splitter(workExperience_text)
-    return baseInfo_dict , skills_dict,education_dict,projects_chunk,awards_text,overallSummary_chunk,workExperience_chunk,resumeId
+    projects=request_data.projectExperience
+    workExperience=request_data.workExperience
+    overallSummary=request_data.overallSummary
+
+    projects_chunk=text_splitter(projects)
+    workExperience_chunk=text_splitter(workExperience)
+    overallSummary_chunk=text_splitter(overallSummary)
+
+    return resumeId,workExperience_chunk,overallSummary_chunk,projects_chunk

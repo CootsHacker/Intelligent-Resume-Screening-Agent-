@@ -3,18 +3,22 @@ import asyncio
 import time
 from asyncio import to_thread
 from contextlib import asynccontextmanager
+from typing import Any
 
-from fastapi import APIRouter, FastAPI,Request
+from fastapi import APIRouter, FastAPI, Request, Depends
 
 from app.core.embedding.embedding_service import embedding_service
 from app.core.vector.Milvus_Client import insert_resumes_to_data
 from app.core.vector.insert_to_Milvus import QueueBatchWriter, insert_to_Milvus
 from app.models.text_spliter_service import  Data
+from app.models.vector_database import VectorData
 from app.prompt.pdf_parse import resume_system_prompt
 from app.api.service.resume_service import parse_local_pdf
 from app.api.service.llm_service import llm_pdf_parse
 from app.models.resume import ResumeRequest
 from app.utils.text_spliter_service import text_input
+
+
 
 router = APIRouter(prefix="/resume", tags=["简历解析"])
 
@@ -29,26 +33,30 @@ async def parse_pdf(request_data: ResumeRequest):
     return {
         **result
     }
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    writer = QueueBatchWriter(max_size=10, timeout=3.0, write_func=insert_to_Milvus)
-    await writer.start()
-    yield {"writer": writer}
-    await writer.shutdown()
-app = FastAPI(lifespan=lifespan)
+#writer: QueueBatchWriter = None
+async def get_batch_writer(request: Request) -> QueueBatchWriter:
+    return request.app.state.writer
+print("=== 正在注册 /vectorize 路由 ===")
+#async def get_batch_writer() -> QueueBatchWriter:
+   #return writer
 @router.post("/vectorize")
-async def resume_vectorize(request: Request,request_data:Data):
-    (baseInfo_dict,skills_dict,education_dict,projects_chunk,awards_text,
-     overallSummary_chunk,workExperience_chunk,resumeId)=await asyncio.to_thread(text_input,request_data)
+async def resume_vectorize(request_data:VectorData,writer: Any = Depends(get_batch_writer)):
+    (resumeId,workExperience_chunk,overallSummary_chunk,projects_chunk)=await asyncio.to_thread(text_input,request_data)
 
     projects_vector,workExperience_vector,overallSummary_vector=await asyncio.gather(
         asyncio.to_thread(embedding_service,projects_chunk),
         asyncio.to_thread(embedding_service,workExperience_chunk),
         asyncio.to_thread(embedding_service,overallSummary_chunk)
     )
-    data=await asyncio.to_thread(insert_resumes_to_data,resumeId,baseInfo_dict,
-                            skills_dict,education_dict,projects_vector,awards_text,overallSummary_vector,workExperience_vector)
-    writer: QueueBatchWriter = request.state.writer
-    await writer.add(data)
+    data=await  asyncio.gather(
+        asyncio.to_thread(insert_resumes_to_data,resumeId,projects_chunk,projects_vector),
+        asyncio.to_thread(insert_resumes_to_data,resumeId,workExperience_chunk,workExperience_vector),
+        asyncio.to_thread(insert_resumes_to_data,resumeId,overallSummary_chunk,overallSummary_vector)
+    )
+    #print(data[0])
+    await asyncio.gather(
+        writer.add(data[0], "resume_projects"),
+        writer.add(data[1], "resume_workExperience"),
+        writer.add(data[2], "resume_overallSummary")
+    )
 
